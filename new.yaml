@@ -1,0 +1,34 @@
+- hosts: maven
+  remote_user: ec2-user
+  become: yes
+  tasks:
+    - name: install Docker
+      yum:
+        name: docker
+        state: latest
+      
+    - name: Docker start
+      service:
+        name: docker
+        state: started
+    - name: app deploy
+      copy: 
+        src: ./Dockerfile
+        dest: /dock/
+        mode: '0777'
+    - name: Index copy
+      copy: 
+        src: ./index.html
+        dest: /dock/
+        mode: '0777'  
+        
+    - name: Image Build
+      command: "docker build -t nginximage ."
+      args:
+        chdir: /dock/
+ 
+    - name: container rm
+      shell: "docker rm -f nginxcontainer"
+    - name: Container
+      shell: "docker run -itd --name nginxnewcontainer -p 8060:80 nginximage"
+      
