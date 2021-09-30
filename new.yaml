@@ -21,14 +21,32 @@
         src: ./index.html
         dest: /dock/
         mode: '0777'  
+    - name: Eagle copy
+      copy: 
+        src: ./Eagle.jpg
+        dest: /dock/
+        mode: '0777'
+    - name: bird copy
+      copy: 
+        src: ./bird.jpg
+        dest: /dock/
+        mode: '0777'
+    - name: js copy
+      copy: 
+        src: ./java.js
+        dest: /dock/
+        mode: '0777'
+    - name: wall copy
+      copy: 
+        src: ./wall.jpg
+        dest: /dock/
+        mode: '0777'
         
     - name: Image Build
       command: "docker build -t nginximage ."
       args:
         chdir: /dock/
- 
-    - name: container rm
-      shell: "docker rm -f nginxcontainer"
+        
     - name: Container
       shell: "docker run -itd --name nginxnewcontainer -p 8060:80 nginximage"
       
